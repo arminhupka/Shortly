@@ -16,7 +16,7 @@ const SlugPage: NextPage = () => {
     const handleRedirect = async (): Promise<void> => {
         try {
             const {data}: AxiosResponse<LinkResponseInterface> = await axios(`http://localhost:8000/links/${slug}`)
-            window.location.replace(data.url)
+            window.location.href = data.url
         } catch (err: any) {
             console.log(err)
         }

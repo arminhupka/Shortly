@@ -12,6 +12,7 @@ This project it's my first attempt to TypeScript and Nest.js which I used to cre
 - Axios
 - Nanoid
 - SWR
+- React QR Code
 
 ## Live demo
 You can check live demo [here](https://shortttly.netlify.app/)

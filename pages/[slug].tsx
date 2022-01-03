@@ -15,8 +15,8 @@ const SlugPage: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleRedirect = async (): Promise<void> => {
         try {
-            const {data}: AxiosResponse<LinkResponseInterface> = await axios(`http://localhost:8000/links/${slug}`)
-            window.location.href = data.url
+            const {data}: AxiosResponse<LinkResponseInterface> = await axios(`${process.env.NEXT_PUBLIC_HOST}/${slug}`)
+            window.location.replace(data.url);
         } catch (err: any) {
             console.log(err)
         }

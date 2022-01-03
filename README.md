@@ -1,4 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Shortly - URL Short APP
+
+![Shortly screenshot](https://i.postimg.cc/J4wPCGcR/localhost-3000.png)
+
+## Description
+Shortly is a service for creating short links which redirects user to original destination.
+This project it's my first attempt to TypeScript and Nest.js which I used to create API.
+
+## Used tools
+- Next.js
+- Styled Components
+- Axios
+- Nanoid
+- SWR
+
+## Live demo
+You can check live demo [here](https://shortttly.netlify.app/)
+
+## API
+You can find API repo [here](https://github.com/arminhupka/ShortlyAPI)
+
+## Future ideas
+- stats page with visitors information
+- custom slug instead of id
+- private links
+
+---
 
 ## Getting Started
 

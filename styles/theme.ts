@@ -31,6 +31,7 @@ const theme = {
         "small": "0 .125rem .25rem rgba(0,0,0, .075)",
         "regular": "0 .5rem 1rem rgba(0,0,0,.15)"
     },
+    error: "#e21111",
     round: {
         md: '.3rem'
     },

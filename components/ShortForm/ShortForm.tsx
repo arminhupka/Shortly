@@ -1,4 +1,4 @@
-import {ReactElement, useState, useRef, useEffect, MutableRefObject, ChangeEvent} from "react";
+import {ReactElement, useState, useRef, MutableRefObject, ChangeEvent} from "react";
 import styled from "styled-components";
 import {FaLink, FaCopy, FaPlus, FaQrcode} from "react-icons/fa";
 import {AxiosResponse} from "axios";
@@ -46,20 +46,45 @@ const ButtonWrapper = styled.div`
   }
 `
 
+const StyledForm = styled.form`
+  width: 100%;
+`
+
+const ElementsWrapper = styled.div`
+  display: flex;
+
+  ${Button} {
+    margin-left: 1rem;
+  }
+`
+
+const ErrorWrapper = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+`
+
+const Error = styled.span`
+  font-weight: 600;
+  color: ${({theme}) => theme.error};
+`
+
 const ShortForm = (): ReactElement => {
     const router = useRouter();
 
     const resultInputRef = useRef() as MutableRefObject<HTMLInputElement>;
-    const submitButtonRef = useRef() as MutableRefObject<HTMLButtonElement>;
 
     const [data, setData] = useState<NewLinkInterface | null>(null);
     const [url, setUrl] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isShorten, setIsShorten] = useState<boolean>(false);
     const [showQR, setShowQR] = useState(false);
+    const [error, setError] = useState("")
 
     const handleSubmit = async (): Promise<any> => {
-        if (!checkUrl(url)) return
+        setError("")
+        if (!checkUrl(url)) {
+            return setError("URL must start with http or https")
+        }
 
         setIsLoading(true)
         try {
@@ -81,6 +106,7 @@ const ShortForm = (): ReactElement => {
     const handleClipboardCopy = async (): Promise<void> => {
         await navigator.clipboard.writeText(resultInputRef.current.value)
     }
+
     const handleInputValue = (e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value);
     const handleCodeButton = () => setShowQR(!showQR)
     const handleReset = () => {
@@ -88,28 +114,28 @@ const ShortForm = (): ReactElement => {
         setIsShorten(false);
     };
 
-    useEffect(() => {
-        window.addEventListener('keypress', (e: KeyboardEvent) => {
-            if (e.key === 'Enter') {
-                submitButtonRef.current.click()
-            }
-        })
-    }, [])
-
     return (
         <section>
             {showQR && <CodePopup onClose={handleCodeButton}/>}
             <Container>
                 <ShortFormWrapper>
                     {!isShorten &&
-                        <>
-                            <TextInput placeholder="Paste link to short" value={url} disabled={isLoading}
-                                       onChange={handleInputValue}/>
-                            <Button ref={submitButtonRef} onClick={handleSubmit}>
-                                {!isLoading && <><FaLink/> &nbsp; Short Link</>}
-                                {isLoading && <>Loading ...</>}
-                            </Button>
-                        </>
+                        <StyledForm onSubmit={event => {
+                            event.preventDefault();
+                            handleSubmit()
+                        }}>
+                            <ElementsWrapper>
+                                <TextInput placeholder="Paste link to short" value={url} disabled={isLoading}
+                                           onChange={handleInputValue}/>
+                                <Button type="submit">
+                                    {!isLoading && <><FaLink/> &nbsp; Short Link</>}
+                                    {isLoading && <>Loading ...</>}
+                                </Button>
+                            </ElementsWrapper>
+                            <ErrorWrapper>
+                                <Error>{error}</Error>
+                            </ErrorWrapper>
+                        </StyledForm>
                     }
                     {isShorten && !isLoading &&
                         <>

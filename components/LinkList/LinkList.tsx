@@ -68,7 +68,7 @@ const StyledTD = styled.td`
   :nth-child(2) {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 50rem;
+    max-width: 35rem;
     white-space: nowrap;
   }
 
@@ -95,10 +95,6 @@ const StyledTD = styled.td`
   }
 
   @media screen and ${devices.lg} {
-    :first-child {
-      padding-left: 0;
-    }
-
     :last-child {
       padding-right: 0;
       flex-direction: row;
@@ -115,7 +111,7 @@ const StyledTD = styled.td`
     }
 
     display: table-cell;
-    padding: 2rem !important;
+    padding: 1rem;
 
   }
 `
@@ -138,6 +134,14 @@ const StyledTH = styled.th`
       padding-right: 0;
     }
   }
+`
+
+const MessageWrapper = styled.div`
+  text-align: center;
+`
+
+const Message = styled.span`
+  font-weight: 600;
 `
 
 
@@ -180,11 +184,32 @@ const LinkList = (): ReactElement => {
             setTotalLinks(data.totalLinks)
             setTotalPages(data.totalPages)
         }
-    }, [data])
+    }, [data, error])
 
 
-    if (!data) 'Loading ...'
-    if (error) 'Error during fetching data from API ...'
+    if (!data && !error) {
+        return (
+            <Section>
+                <Container>
+                    <MessageWrapper>
+                        <Message>Loading ...</Message>
+                    </MessageWrapper>
+                </Container>
+            </Section>
+        )
+    }
+
+    if (error) {
+        return (
+            <Section>
+                <Container>
+                    <MessageWrapper>
+                        <Message>Error during fetching data from API</Message>
+                    </MessageWrapper>
+                </Container>
+            </Section>
+        )
+    }
 
 
     return (
@@ -192,40 +217,46 @@ const LinkList = (): ReactElement => {
             {isVisible && <CodePopup onClose={handleVisible}/>}
             <Section>
                 <Container>
-                    <StyledTable>
-                        <tbody>
-                        <StyledRow>
-                            <StyledTH>Short Link</StyledTH>
-                            <StyledTH>Page Title</StyledTH>
-                            <StyledTH>Visits</StyledTH>
-                            <StyledTH>Added</StyledTH>
-                            <StyledTH/>
-                        </StyledRow>
-                        {data && data.links.map((link: LinkResponseInterface) => (
-                            <StyledRow key={link._id}>
-                                <StyledTD data-th="Short Link">
-                                    {process.env.NEXT_PUBLIC_HOST}/{link.slug}
-                                </StyledTD>
-                                <StyledTD data-th="Page Title">
-                                    {link.title}
-                                </StyledTD>
-                                <StyledTD data-th="Visits">
-                                    {link.visits}
-                                </StyledTD>
-                                <StyledTD data-th="Added">
-                                    {new Date(link.createdAt).toLocaleDateString()}
-                                </StyledTD>
-                                <StyledTD>
-                                    <Button
-                                        onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_HOST}/${link.slug}`)}><FaCopy/> &nbsp; Copy
-                                        link</Button>
-                                    <Button onClick={handleVisible}><FaQrcode/> &nbsp; Show QR</Button>
-                                </StyledTD>
-                            </StyledRow>
-                        ))}
-                        </tbody>
-                    </StyledTable>
-                    <Pagination paginationElements={pagination} currentPage={currentPage} changePage={setCurrentPage} totalPages={totalPages}/>
+                    {data &&
+                        <>
+                            <StyledTable>
+                                <tbody>
+                                <StyledRow>
+                                    <StyledTH>Short Link</StyledTH>
+                                    <StyledTH>Page Title</StyledTH>
+                                    <StyledTH>Visits</StyledTH>
+                                    <StyledTH>Added</StyledTH>
+                                    <StyledTH/>
+                                </StyledRow>
+                                {data && data.links.map((link: LinkResponseInterface) => (
+                                    <StyledRow key={link._id}>
+                                        <StyledTD data-th="Short Link">
+                                            {process.env.NEXT_PUBLIC_HOST}/{link.slug}
+                                        </StyledTD>
+                                        <StyledTD data-th="Page Title">
+                                            {link.title}
+                                        </StyledTD>
+                                        <StyledTD data-th="Visits">
+                                            {link.visits}
+                                        </StyledTD>
+                                        <StyledTD data-th="Added">
+                                            {new Date(link.createdAt).toLocaleDateString()}
+                                        </StyledTD>
+                                        <StyledTD>
+                                            <Button
+                                                onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_HOST}/${link.slug}`)}><FaCopy/> &nbsp; Copy
+                                                link</Button>
+                                            <Button onClick={handleVisible}><FaQrcode/> &nbsp; Show QR</Button>
+                                        </StyledTD>
+                                    </StyledRow>
+                                ))}
+                                </tbody>
+                            </StyledTable>
+                            <Pagination paginationElements={pagination} currentPage={currentPage}
+                                        changePage={setCurrentPage} totalPages={totalPages}/>
+                        </>
+
+                    }
                 </Container>
             </Section>
         </>

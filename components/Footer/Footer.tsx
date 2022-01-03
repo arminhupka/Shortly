@@ -22,7 +22,11 @@ const Footer = (): ReactElement => (
         <Container>
             <Row>
                 <Col>
-                    <StyledCopyright>created by @arminhupka</StyledCopyright>
+                    <StyledCopyright>
+                        <a href="https://github.com/arminhupka/">
+                            created by @arminhupka
+                        </a>
+                    </StyledCopyright>
                 </Col>
             </Row>
         </Container>

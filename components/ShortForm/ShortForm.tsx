@@ -1,7 +1,6 @@
 import {ReactElement, useState, useRef, useEffect, MutableRefObject, ChangeEvent} from "react";
 import styled from "styled-components";
 import {FaLink, FaCopy, FaPlus, FaQrcode} from "react-icons/fa";
-import {AiOutlineLoading3Quarters} from 'react-icons/ai';
 import {AxiosResponse} from "axios";
 import {useRouter} from "next/router";
 
@@ -104,10 +103,11 @@ const ShortForm = (): ReactElement => {
                 <ShortFormWrapper>
                     {!isShorten &&
                         <>
-                            <TextInput placeholder="Paste link to short" value={url} onChange={handleInputValue}/>
+                            <TextInput placeholder="Paste link to short" value={url} disabled={isLoading}
+                                       onChange={handleInputValue}/>
                             <Button ref={submitButtonRef} onClick={handleSubmit}>
-                                {!isLoading && <span><FaLink/> &nbsp; Short Link</span>}
-                                {isLoading && <span><AiOutlineLoading3Quarters/> &nbsp; Loading ...</span>}
+                                {!isLoading && <><FaLink/> &nbsp; Short Link</>}
+                                {isLoading && <>Loading ...</>}
                             </Button>
                         </>
                     }

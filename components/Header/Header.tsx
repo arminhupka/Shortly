@@ -1,10 +1,9 @@
 import {ReactElement} from "react";
 import styled from "styled-components";
+import {FaGithub} from "react-icons/fa";
 
 // Components
 import {Container} from "../../styles/GlobalStyle";
-import Nav from "./Nav/Nav";
-import SocialIcon from "../SocialIcon/SocialIcon";
 
 // Styled Components
 const StyledHeader = styled.header`
@@ -29,19 +28,27 @@ const StyledContainer = styled(Container)`
   justify-content: space-between;
 `
 
+const StyledLink = styled.a`
+  display: flex;
+  font-size: 3rem;
+  color: ${({theme}) => theme.primary['500']};
+`
+
 const Header = (): ReactElement => (
     <StyledHeader>
         <StyledContainer>
-            <div>
-                <h1>Shortly</h1>
-            </div>
-            <Nav/>
             <Row>
                 <Col>
-                    <SocialIcon/>
+                    <div>
+                        <h1>Shortly</h1>
+                    </div>
                 </Col>
+            </Row>
+            <Row>
                 <Col>
-                    <SocialIcon/>
+                    <StyledLink href="https://github.com/arminhupka/Shortly">
+                        <FaGithub/>
+                    </StyledLink>
                 </Col>
             </Row>
         </StyledContainer>

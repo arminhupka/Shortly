@@ -29,7 +29,7 @@ const PaginationBtn = styled.button<{ current: boolean }>`
   border: ${({theme, current}) => current ? `.1rem solid ${theme.black}` : "none"};
   border-radius: ${({theme}) => theme.round.md};
   transition: background-color .3s;
-  
+
   :hover {
     background: ${({theme, current}) => !current && theme.primary["100"]};
   }
@@ -46,16 +46,19 @@ const Separator = styled.span`
 `
 
 const Pagination = ({paginationElements, currentPage, changePage, totalPages}: Props): ReactElement => {
+    const scrollToTop = ():void => window.scroll(0, 0)
 
-    const handlePrevPageBtn = () => {
-        if(currentPage === 1) return;
+    const handlePrevPageBtn = ():void => {
+        if (currentPage === 1) return;
 
+        scrollToTop();
         changePage(currentPage - 1);
     }
 
-    const handleNextPageBtn = () => {
-        if(currentPage === totalPages) return;
+    const handleNextPageBtn = ():void => {
+        if (currentPage === totalPages) return;
 
+        scrollToTop();
         changePage(currentPage + 1);
     }
 
@@ -65,10 +68,13 @@ const Pagination = ({paginationElements, currentPage, changePage, totalPages}: P
                 <FaChevronLeft/>
             </PaginationBtn>
             {paginationElements.map((element, index) => {
-                if(element !== "...") {
+                if (element !== "...") {
                     return (
                         <PaginationBtn key={index} current={currentPage === element}
-                                       onClick={() => changePage(Number(element))}>
+                                       onClick={() => {
+                                           changePage(Number(element))
+                                           scrollToTop();
+                                       }}>
                             {element}
                         </PaginationBtn>
                     )

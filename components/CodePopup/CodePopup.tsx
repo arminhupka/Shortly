@@ -3,6 +3,7 @@ import styled from "styled-components";
 import QRCode from 'react-qr-code'
 
 interface Props {
+    value: string,
     onClose: () => void;
 }
 
@@ -33,12 +34,12 @@ const CodeWrapper = styled.div`
   overflow: hidden;
 `
 
-const CodePopup = ({onClose}: Props): ReactElement => (
+const CodePopup = ({value, onClose}: Props): ReactElement => (
     <PopupWrapper onClick={onClose}>
         <CodeWrapper onClick={event => {
             event.stopPropagation()
         }}>
-            <QRCode value="123" size={450}/>
+            <QRCode value={value} size={450}/>
         </CodeWrapper>
     </PopupWrapper>
 )

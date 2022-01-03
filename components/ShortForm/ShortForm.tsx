@@ -116,7 +116,7 @@ const ShortForm = (): ReactElement => {
 
     return (
         <section>
-            {showQR && <CodePopup onClose={handleCodeButton}/>}
+            {showQR && data && <CodePopup value={data.data.url} onClose={handleCodeButton}/>}
             <Container>
                 <ShortFormWrapper>
                     {!isShorten &&

@@ -158,6 +158,7 @@ const LinkList = (): ReactElement => {
     const [totalLinks, setTotalLinks] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [selected, setSelected] = useState<string>("");
 
     const pagination = usePagination({
         currentPage,
@@ -214,7 +215,7 @@ const LinkList = (): ReactElement => {
 
     return (
         <>
-            {isVisible && <CodePopup onClose={handleVisible}/>}
+            {isVisible && <CodePopup value={selected} onClose={handleVisible}/>}
             <Section>
                 <Container>
                     {data &&
@@ -246,7 +247,10 @@ const LinkList = (): ReactElement => {
                                             <Button
                                                 onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_HOST}/${link.slug}`)}><FaCopy/> &nbsp; Copy
                                                 link</Button>
-                                            <Button onClick={handleVisible}><FaQrcode/> &nbsp; Show QR</Button>
+                                            <Button onClick={() => {
+                                                setSelected(link.url)
+                                                handleVisible()
+                                            }}><FaQrcode/> &nbsp; Show QR</Button>
                                         </StyledTD>
                                     </StyledRow>
                                 ))}
